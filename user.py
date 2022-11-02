@@ -6,13 +6,14 @@ user_questions = [
         "type":"input",
         "name":"spender",
         "message":"New User - Name: ",
+        "validate": lambda val: len(val.strip()) > 0 or "Please enter a name",
     },
 ]
 
 def add_user(*args):
     # This function should create a new user, asking for its name
     user = prompt(user_questions)
-    userName = user['spender']
+    userName = user['spender'].strip()
 
     # Check if the user already exists
     with open('users.csv', newline='') as csvfile:
