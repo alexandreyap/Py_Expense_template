@@ -1,14 +1,17 @@
 from PyInquirer import prompt
 import csv
 
-def get_users():
+def get_users(spender):
     users = []
 
     with open('users.csv', newline='') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
         for row in spamreader:
             if len(row) > 0:
-                users.append({"name": row[0]})
+                if row[0] != spender:
+                    users.append({"name": row[0]})
+                else :
+                    users.append({"name": row[0], "checked": True})
 
     return users
 
@@ -30,24 +33,18 @@ expense_questions = [
         "message":"New Expense - Spender: ",
         "choices": [user[0] for user in csv.reader(open('users.csv', 'r'))]
     },
-    {
-        "type": "checkbox",
-        "message": "Select involved users",
-        "name": "involved",
-        "choices": get_users(),
-    }
-
 ]
 
-involved_questions = [
-    {
-        "type": "checkbox",
-        "message": "Select involved users",
-        "name": "involved",
-        "choices": get_users(),
-    }
-]
-
+def involved_questions(spender):
+    involved_questions = [
+        {
+            "type": "checkbox",
+            "message": "Select involved users",
+            "name": "involved",
+            "choices": get_users(spender),
+        }
+    ]
+    return involved_questions
 
 
 def new_expense(*args):
@@ -61,8 +58,9 @@ def new_expense(*args):
 
     label = infos['label']
     spender = infos['spender']
+    infosv2 = prompt(involved_questions(spender))
 
-    involved = infos['involved']
+    involved = infosv2['involved']
     while len(involved) == 0:
         print("You must select at least one involved user (or the spender if no one else is involved)")
         involved = prompt(involved_questions)['involved']
