@@ -90,3 +90,33 @@ def get_report():
             print(string)
 
     return status_report
+
+
+
+def broke():
+    report = []
+
+    # Get all expenses
+    expenses = get_expenses()
+    if len(expenses) == 0:
+        return "No expenses yet"
+
+    status_report = formalize_report()
+
+    for expense in expenses:
+        if expense['involved'] == []:
+            continue
+        
+        share = float(expense['amount']) / (len(expense['involved']) + 1)
+        for user in expense['involved']:
+            status_report[user][expense['spender']]['amount'] += share
+
+    # Finalize the report
+    for ower in status_report:
+        owe_to_others = 0
+        user_report = status_report[ower]
+        for user in user_report:
+            if user_report[user]['amount'] > 0:
+                owe_to_others += user_report[user]['amount']
+        
+        print(f"{ower} is {owe_to_others} in debt")

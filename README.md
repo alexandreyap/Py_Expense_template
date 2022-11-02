@@ -45,5 +45,5 @@ Exemple: 3 Users :
 - [X] User Input Validation : Throw an error if an expense amount is not a number, and so on ..
 - [ ] All implemented features should have relevant test cases
     - If I just have to run your test suite to check project quality and features : Automatic bonus
-- [ ] Bonus : Improve your app in any way you want : More features, fancy report, any good idea will be rewarded
+- [X] Bonus : Improve your app in any way you want : More features, fancy report, any good idea will be rewarded
 
